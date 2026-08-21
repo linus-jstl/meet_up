@@ -12,14 +12,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
 
-  final List<Widget> _pages = [
-    const Center(child: Text('Termine')),
-    Center(child: Text('Du bist eingeloggt als:\n${Supabase.instance.client.auth.currentUser?.email}')),
-    const LogoutButton(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+
+    final user = Supabase.instance.client.auth.currentUser;
+
+    final List<Widget> _pages = [
+      const Center(child: Text('Termine')),
+      Center(child: Text('Du bist eingeloggt als:\n${user?.email}')),
+      const LogoutButton(),
+    ];
 
     return Scaffold(
       body: _pages[_currentIndex], 
