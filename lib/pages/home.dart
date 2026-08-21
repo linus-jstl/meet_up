@@ -12,10 +12,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
 
-  // Die verschiedenen Seiten deiner App
   final List<Widget> _pages = [
     const Center(child: Text('Termine')),
-    const Center(child: Text('Startseite')),
+    Center(child: Text('Du bist eingeloggt als:\n${Supabase.instance.client.auth.currentUser?.email}')),
     const LogoutButton(),
   ];
 
