@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_up/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      home: MyHomePage(title: 'MeetUp')
+      home: HomePage(),
     );
   }
 }
