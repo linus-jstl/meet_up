@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_up/pages/auth.dart';
 import 'package:meet_up/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -23,18 +24,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      home: HomePage(),
+      home: AuthGate(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  
-  final String title;
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return StreamBuilder<AuthState>(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
+      builder: (context, snapshot) {
+        final session = snapshot.data?.session;
+
+        if (session != null) {
+          return const HomePage();
+        }
+
+        return const AuthPage();
+      },
+    );
+  }
 }
 
 Scaffold test_supabase(BuildContext context) {
@@ -46,6 +58,15 @@ Scaffold test_supabase(BuildContext context) {
           child: Text('Supabase initialisiert!'),
         ),
       );
+}
+
+/*class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -86,4 +107,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
+}*/

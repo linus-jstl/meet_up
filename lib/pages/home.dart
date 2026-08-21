@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_up/buttons/logout.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const Center(child: Text('Termine')),
     const Center(child: Text('Startseite')),
-    const Center(child: Text('Profil')),
+    const LogoutButton(),
   ];
 
   @override
