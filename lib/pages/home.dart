@@ -17,14 +17,14 @@ class _HomePageState extends State<HomePage> {
 
     final user = Supabase.instance.client.auth.currentUser;
 
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       const Center(child: Text('Termine')),
       Center(child: Text('Du bist eingeloggt als:\n${user?.email}')),
       const LogoutButton(),
     ];
 
     return Scaffold(
-      body: _pages[_currentIndex], 
+      body: pages[_currentIndex], 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (int newIndex) {
