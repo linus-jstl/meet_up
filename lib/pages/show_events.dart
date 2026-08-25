@@ -82,7 +82,10 @@ class _ShowEventsState extends State<ShowEvents> {
           return ListTile(
             leading: const Icon(Icons.event),
             title: Text(event['name']),
-            subtitle: Text(event['event_id'].toString()),
+            subtitle: Text(
+              event['time'].toString() + ", ".toString() +
+              event['location'].toString() + "\n".toString() +
+              event['event_id'].toString()),
           );
         },
       ),
