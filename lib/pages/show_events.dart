@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_up/pages/add_event.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ShowEvents extends StatefulWidget {
@@ -40,6 +41,8 @@ class _ShowEventsState extends State<ShowEvents> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -60,17 +63,36 @@ class _ShowEventsState extends State<ShowEvents> {
       );
     }
 
-    return ListView.builder(
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        final event = events[index];
+    void addEvent() async {
+      await Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: ((context) => AddEventPage()))
+      );
 
-        return ListTile(
-          leading: const Icon(Icons.event),
-          title: Text(event['name']),
-          subtitle: Text(event['event_id'].toString()),
-        );
-      },
+      await loadEvents();
+    }
+
+    return Scaffold(
+      body: ListView.builder(
+        itemCount: events.length,
+        itemBuilder: (context, index) {
+          final event = events[index];
+
+          return ListTile(
+            leading: const Icon(Icons.event),
+            title: Text(event['name']),
+            subtitle: Text(event['event_id'].toString()),
+          );
+        },
+      ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: addEvent,
+        icon: const Icon(Icons.add),
+        label: const Text('Treffen hinzufügen'),
+      )
     );
+    
   }
 }
