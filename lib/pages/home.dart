@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meet_up/buttons/logout.dart';
+import 'package:meet_up/pages/show_events.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     final user = Supabase.instance.client.auth.currentUser;
 
     final List<Widget> pages = [
-      const Center(child: Text('Termine')),
+      ShowEvents(),
       Center(child: Text('Du bist eingeloggt als:\n${user?.email}')),
       const LogoutButton(),
     ];
