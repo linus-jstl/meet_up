@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:meet_up/buttons/delete_event.dart';
 import 'package:meet_up/buttons/edit_coming.dart';
 import 'package:meet_up/pages/add_event.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,49 +23,48 @@ class _ShowEventsState extends State<ShowEvents> {
   @override
   void initState() {
     super.initState();
-    loadEvents();
-    loadComing();
-  }
+    loadData();
+}
 
-  Future<void> loadEvents() async {
-    try {
-      final eventDetails = await supabase
+Future<void> loadData() async {
+  try {
+    final userId = supabase.auth.currentUser?.id;
+
+    if (userId == null) return;
+
+    final results = await Future.wait([
+      supabase
           .from('event_details')
           .select()
-          .or('time.gte.${DateTime.now().toIso8601String()},time.is.null',);
+          .or(
+            'time.gte.${DateTime.now().toIso8601String()},time.is.null',
+          ),
 
-      setState(() {
-        events = List<Map<String, dynamic>>.from(eventDetails);
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        error = e.toString();
-        isLoading = false;
-      });
-    }
+      supabase
+          .from('members')
+          .select()
+          .eq('user_id', userId),
+    ]);
+
+    if (!mounted) return;
+
+    debugPrint('EVENTS: ${results[0]}');
+    debugPrint('MEMBERS: ${results[1]}');
+
+    setState(() {
+      events = List<Map<String, dynamic>>.from(results[0]);
+      members = List<Map<String, dynamic>>.from(results[1]);
+      isLoading = false;
+    });
+  } catch (e) {
+    if (!mounted) return;
+
+    setState(() {
+      error = e.toString();
+      isLoading = false;
+    });
   }
-
-  void loadComing() async {
-    try {
-      final userId = supabase.auth.currentUser?.id;
-      if (userId == null) {return;}
-
-      final data = await supabase
-        .from('members')
-        .select('event_id, coming')
-        .eq('user_id', userId);
-      
-      setState(() {
-        members = List<Map<String, dynamic>>.from(data);
-      });
-
-    } catch (e) {
-      setState(() {
-        error = e.toString();
-      });
-    }
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _ShowEventsState extends State<ShowEvents> {
           builder: ((context) => AddEventPage()))
       );
 
-      await loadEvents();
+      await loadData();
     }
 
     return Scaffold(
@@ -107,6 +107,7 @@ class _ShowEventsState extends State<ShowEvents> {
             );
 
             final bool coming = member['coming'];
+            final bool admin = member['is_admin'];
 
             return ListTile(
               leading: const Icon(Icons.event),
@@ -115,7 +116,14 @@ class _ShowEventsState extends State<ShowEvents> {
                 event['time'].toString() + ", ".toString() +
                 event['location'].toString() + "\n".toString() +
                 event['event_id'].toString()),
-              trailing: EditComing(eventId: event['event_id'], initialComing: coming),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (admin) DeleteButton(eventId: event['event_id'], onDeleted: loadData),
+                  const SizedBox(width: 32,),
+                  EditComing(eventId: event['event_id'], initialComing: coming),
+                ],
+              )
             );
           },
       ),
@@ -126,6 +134,5 @@ class _ShowEventsState extends State<ShowEvents> {
         label: const Text('Treffen hinzufügen'),
       )
     );
-    
   }
 }

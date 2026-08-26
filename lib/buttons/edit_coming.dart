@@ -5,7 +5,7 @@ class EditComing extends StatefulWidget {
   final String eventId;
   final bool? initialComing;
 
-  const EditComing({
+  const new({
     super.key,
     required this.eventId,
     required this.initialComing,
@@ -60,7 +60,7 @@ class _EditComingState extends State<EditComing> {
           ),
           child: const Icon(Icons.check_rounded),
         ),
-
+        SizedBox(width: 8,),
         ElevatedButton(
           onPressed: () => setComing(false),
           style: ElevatedButton.styleFrom(
