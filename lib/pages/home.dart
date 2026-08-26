@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meet_up/buttons/join_event.dart';
 import 'package:meet_up/buttons/logout.dart';
 import 'package:meet_up/pages/show_events.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,7 +21,10 @@ class _HomePageState extends State<HomePage> {
 
     final List<Widget> pages = [
       ShowEvents(),
-      Center(child: Text('Du bist eingeloggt als:\n${user?.email}')),
+      Column(children: [
+        Center(child: Text('Du bist eingeloggt als:\n${user?.email}')),
+        JoinButton(),
+      ],),
       const LogoutButton(),
     ];
 
