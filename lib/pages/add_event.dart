@@ -9,7 +9,7 @@ class AddEventPage extends StatefulWidget {
   State<AddEventPage> createState() => _AddEventPageState();
 }
 
-void changeEventDetails(dynamic context, String event_id, String name, String? dateTimeString, String location) async{
+void changeEventDetails(dynamic context, String eventId, String name, String? dateTimeString, String location) async{
   try {
     await Supabase.instance.client
         .from('event_details')
@@ -18,10 +18,10 @@ void changeEventDetails(dynamic context, String event_id, String name, String? d
           'time': dateTimeString,
           'location': location,
         })
-        .eq('event_id', event_id);
+        .eq('event_id', eventId);
 
   } catch (e) {
-    print('Fehler beim Aktualisieren: $e');
+    debugPrint('Fehler beim Aktualisieren: $e');
   }
 }
 
@@ -117,14 +117,14 @@ class _AddEventPageState extends State<AddEventPage> {
 
     changeEventDetails(context, eventId, name, dateTime, location);
 
-    print('Event erstellt: $eventId');
+    debugPrint('Event erstellt: $eventId');
 
     if (mounted) {
       Navigator.pop(context);
     }
 
   } catch (e) {
-    print('Fehler beim Erstellen: $e');
+    debugPrint('Fehler beim Erstellen: $e');
   }
 }
 

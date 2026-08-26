@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:meet_up/buttons/delete_event.dart';
 import 'package:meet_up/buttons/edit_coming.dart';
+import 'package:meet_up/buttons/invite_members.dart';
 import 'package:meet_up/pages/add_event.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -47,9 +48,6 @@ Future<void> loadData() async {
     ]);
 
     if (!mounted) return;
-
-    debugPrint('EVENTS: ${results[0]}');
-    debugPrint('MEMBERS: ${results[1]}');
 
     setState(() {
       events = List<Map<String, dynamic>>.from(results[0]);
@@ -119,6 +117,8 @@ Future<void> loadData() async {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (admin) InviteButton(eventId: event['event_id']),
+                  const SizedBox(width: 8,),
                   if (admin) DeleteButton(eventId: event['event_id'], onDeleted: loadData),
                   const SizedBox(width: 32,),
                   EditComing(eventId: event['event_id'], initialComing: coming),
