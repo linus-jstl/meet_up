@@ -42,16 +42,39 @@ class _JoinEventState extends State<JoinEvent> {
 
   Future<void> joinEvent(String joinCode) async {
 
+    setState(() {
+      loading = true;
+    });
+
     final eventId = await getEventId(joinCode);
 
     if (!mounted) {return;}
 
+    final userId = supabase.auth.currentUser?.id;
+
+    if (userId == null) return;
+
     if (eventId == '') {return;}
 
     try {
+
+      final existingMember = await supabase
+        .from('members')
+        .select()
+        .eq('event_id', eventId)
+        .eq('user_id', userId)
+        .maybeSingle();
+
+    if (existingMember != null) {
+      debugPrint('User ist bereits Mitglied');
+      
       setState(() {
-        loading = true;
+        loading = false;
       });
+
+      return;
+    }
+
 
       await Supabase.instance.client
         .from('members')
@@ -69,6 +92,9 @@ class _JoinEventState extends State<JoinEvent> {
 
     } catch (e) {
       debugPrint('Event konnte nicht beigetreten werden: $e');
+      setState(() {
+        loading = false;
+      });
     }
   }
 

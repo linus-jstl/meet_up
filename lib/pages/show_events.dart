@@ -104,7 +104,7 @@ Future<void> loadData() async {
               (member) => member['event_id'] == event['event_id'],
             );
 
-            final bool coming = member['coming'];
+            final bool? coming = member['coming'];
             final bool admin = member['is_admin'];
 
             return ListTile(
