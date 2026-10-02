@@ -17,4 +17,4 @@ Es handelt sich hierbei nicht um ein fertiges, poliertes Vorzeigeprojekt, sonder
 * Aktuelle Bugs oder unfertige Experimente lagere ich ganz bewusst in verschiedene **Branches** aus, um den Main-Branch nicht zu zerschießen. Ich weiß, dass diese hier nicht nach Konventionen benannt sind
 * Da ich das Projekt in meiner Freizeit neben dem Studium (und zuletzt dem Training für den Berlin-Marathon) entwickle, gibt es zwischen den Commits auch mal längere Pausen.
 
-Und ja, natürlich ist das hier KI generiert. Aber trotzdem ziemlich zutreffend
+Und ja, natürlich ist diese README hier KI generiert. Aber trotzdem ziemlich zutreffend
